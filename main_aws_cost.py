@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import schedule
 import time
 import argparse
+import pygetwindow as gw
 
 def get_client(profile_name=None):
     """
@@ -137,28 +138,27 @@ def job():
     monthly_df = transform_data(monthly_response)
     
     # グラフの描画
-    # DPIを設定（デフォルトは100）
-    dpi = 100
-
-    # インチへの変換
-    width_inch = 683 / dpi
-    height_inch = 768 / dpi
-
-    fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(width_inch, height_inch))
-    
-    # フィギュアの表示位置を指定
-    manager = plt.get_current_fig_manager()
-    manager.window.wm_geometry("+683+0")
+    fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(8, 8), dpi=100)
     
     plot_daily_cost(axes[0], daily_df)
     plot_monthly_cost(axes[1], monthly_df)
     
     plt.tight_layout()
     plt.show()
-    
+
+    # ウィンドウが表示されるのを待つための時間
+    time.sleep(1)
+
+    # ウィンドウの名前で取得（OSによって異なる場合があります）
+    window = gw.getWindowsWithTitle('AWS Cost')[0]
+
+    # ウィンドウの位置とサイズを設定
+    window.resizeTo(683, 768)
+    window.moveTo(683, 0)
+
     predict_monthly_cost(daily_df)
 
-# job()
+job()
 
 # 4時間ごとの自動更新
 schedule.every(4).hours.do(job)

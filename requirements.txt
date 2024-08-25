@@ -3,3 +3,4 @@ matplotlib==3.8.0
 seaborn==0.12.2
 pandas==2.0.3
 schedule==1.2.0
+pygetwindow==0.0.9
