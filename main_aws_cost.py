@@ -88,7 +88,7 @@ def plot_daily_cost(ax, df):
     ax.set_ylabel('Cost (USD)')
     
     # 横軸ラベルをyy-mm-dd形式に変更し、横書きに設定
-    ax.xaxis.set_major_formatter(plt.FixedFormatter(df_pivot.index.strftime('%y-%m-%d')))
+    ax.xaxis.set_major_formatter(plt.FixedFormatter(df_pivot.index.strftime('%d')))
     ax.tick_params(axis='x', rotation=0)  # 横書き
 
     ax.legend(title='Service', bbox_to_anchor=(1.05, 1), loc='upper left')
@@ -109,7 +109,7 @@ def plot_monthly_cost(ax, df):
     ax.set_ylabel('Cost (USD)')
     
     # 横軸ラベルをyyyy-mm形式に変更し、横書きに設定
-    ax.xaxis.set_major_formatter(plt.FixedFormatter(df_pivot.index.strftime('%Y-%m')))
+    ax.xaxis.set_major_formatter(plt.FixedFormatter(df_pivot.index.strftime('%m')))
     ax.tick_params(axis='x', rotation=0)  # 横書き
 
     ax.legend(title='Service', bbox_to_anchor=(1.05, 1), loc='upper left')
@@ -137,7 +137,18 @@ def job():
     monthly_df = transform_data(monthly_response)
     
     # グラフの描画
-    fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(12, 12))
+    # DPIを設定（デフォルトは100）
+    dpi = 100
+
+    # インチへの変換
+    width_inch = 683 / dpi
+    height_inch = 768 / dpi
+
+    fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(width_inch, height_inch))
+    
+    # フィギュアの表示位置を指定
+    manager = plt.get_current_fig_manager()
+    manager.window.wm_geometry("+683+0")
     
     plot_daily_cost(axes[0], daily_df)
     plot_monthly_cost(axes[1], monthly_df)
@@ -150,10 +161,10 @@ def job():
 # job()
 
 # 4時間ごとの自動更新
-schedule.every(4).hour.do(job)
+schedule.every(4).hours.do(job)
 
 # プログラムの実行
 if __name__ == "__main__":
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+   while True:
+       schedule.run_pending()
+       time.sleep(1)
