@@ -147,8 +147,8 @@ def job():
     fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(width_inch, height_inch))
     
     # フィギュアの表示位置を指定
-    manager = plt.get_current_fig_manager()
-    manager.window.wm_geometry("+683+0")
+    # manager = plt.get_current_fig_manager()
+    # manager.window.wm_geometry("+683+0")
     
     plot_daily_cost(axes[0], daily_df)
     plot_monthly_cost(axes[1], monthly_df)
