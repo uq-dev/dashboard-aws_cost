@@ -1,0 +1,5 @@
+boto3==1.28.57
+matplotlib==3.8.0
+seaborn==0.12.2
+pandas==2.0.3
+schedule==1.2.0
